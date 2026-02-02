@@ -29,8 +29,8 @@ const MainPage = () => {
     }
 
     useEffect(()=>{
-        bottomRef.current?.scrollIntoView({behAaviour:"smooth"})
-    },[messages,loading])
+        bottomRef.current?.scrollIntoView({behavior:"smooth"})
+    },[messages])
     return (
         <div className='main-page'>
             <div className='chat-header'>
