@@ -15,7 +15,7 @@ const MainPage = () => {
         if (!query.trim()) return;
         try {
             setLoading(true)
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/search?query=${encodeURIComponent(query)}`)
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/search?query=${encodeURIComponent(query)}`,  { timeout: 8000 })
             setMessages((prev) => [...prev, {
                 user: query,
                 bot: response.data.message
