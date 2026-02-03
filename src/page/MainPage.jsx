@@ -15,14 +15,31 @@ const MainPage = () => {
         if (!query.trim()) return;
         try {
             setLoading(true)
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/search?query=${encodeURIComponent(query)}`,  { timeout:5000 })
-            setMessages((prev) => [...prev, {
-                user: query,
-                bot: response.data.message
-            }])
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/search?query=${encodeURIComponent(query)}`,  { timeout:8000 })
+             const botReply =
+            response?.data?.message?.trim()
+                ? response.data.message
+                : "Sorry, I couldn’t find anything related to that 🤖"
+
+        setMessages((prev) => [
+            ...prev,
+            { user: query, bot: botReply }
+        ])
+
             setQuery('')
-        } catch (error) {
-            console.log(error)
+        }catch (error) {
+        let botReply = "Something went wrong 😕 Please try again."
+
+        if (error.code === "ECONNABORTED") {
+            botReply = "Server is taking too long ⏳ Try again."
+        } else if (error.response?.status === 502) {
+            botReply = "Server is restarting 🔄 Please wait a bit."
+        }
+
+        setMessages((prev) => [
+            ...prev,
+            { user: query, bot: botReply }
+        ])
         } finally {
             setLoading(false)
         }
